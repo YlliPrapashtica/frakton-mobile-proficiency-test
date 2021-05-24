@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'userData.dart';
 import 'screens/singleUserData.dart';
 
+//Pull Data From Provided API Endpoint
 Future<Users> fetchAlbum() async {
   final response =
       await http.get(Uri.parse('https://reqres.in/api/users?per_page=12'));
@@ -12,6 +13,7 @@ Future<Users> fetchAlbum() async {
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
+
     return Users.fromJson(jsonDecode(response.body));
   } else {
     // If the server did not return a 200 OK response,
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Frakton Mobile Test App',
       theme: ThemeData(
           primarySwatch: Colors.blue,
           appBarTheme: AppBarTheme(color: Color(0xFFFFD300)),
@@ -50,6 +52,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //Collect All Users From API
   late Future<Users> futureAlbum;
   @override
   void initState() {
@@ -64,6 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            //Add Logo To App Bar
             Image.asset(
               'assets/logo_white.png',
               fit: BoxFit.contain,
@@ -76,8 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisCount: 2,
         crossAxisSpacing: 10.0,
         mainAxisSpacing: 10.0,
+        //Print 2 x n Grid
         children: List.generate(12, (index) {
           return Center(
+            //Print Each User From API
             child: FutureBuilder<Users>(
               future: futureAlbum,
               builder: (context, snapshot) {
@@ -87,14 +93,18 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
+                            //Send To User Details Page
                             builder: (context) => SingleUser(
+                                //Send User Detail Page Information
                                 singleUser: snapshot.data!.data[index]),
                             settings: RouteSettings(
+                              //Send All Users Collected From API & Current Index Of Current User Selected
                               arguments: CatchUsers(index, snapshot.data!),
                             ),
                           ),
                         );
                       },
+                      //Single User Container
                       child: Container(
                         padding: EdgeInsets.all(10),
                         height: 200,
@@ -120,10 +130,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ],
                         ),
+                        //Single User Information
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
+                              //User Avatar
                               ClipOval(
                                 child: Image.network(
                                   snapshot.data!.data[index].avatar,
@@ -133,6 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               SizedBox(height: 30),
+                              //User Name + Last Name
                               Text(
                                 snapshot.data!.data[index].firstName +
                                     " " +
@@ -147,11 +160,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ]),
                       ));
+                  //Users Dont Exist
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
                 }
 
-                // By default, show a loading spinner.
+                // Show a loading spinner.
                 return CircularProgressIndicator();
               },
             ),

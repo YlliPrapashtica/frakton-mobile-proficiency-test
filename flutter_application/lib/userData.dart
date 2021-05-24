@@ -14,6 +14,7 @@ class Users {
   int totalPages;
   List<UserData> data;
 
+  //Extract Data From JSON
   factory Users.fromJson(Map<String, dynamic> json) => Users(
       page: json["page"],
       perPage: json["per_page"],
@@ -28,8 +29,4 @@ class Users {
         "total_pages": totalPages,
         "data": List<dynamic>.from(data.map((x) => x.toJson()))
       };
-
-  List<UserData> getFutureUser() {
-    return this.data;
-  }
 }

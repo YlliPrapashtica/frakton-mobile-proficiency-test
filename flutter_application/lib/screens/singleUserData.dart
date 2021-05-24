@@ -4,6 +4,7 @@ import 'package:flutter_application/catchUsers.dart';
 import 'package:flutter_application/main.dart';
 import 'package:photo_view/photo_view.dart';
 
+//Single User Data
 class UserData {
   UserData({
     required this.id,
@@ -19,6 +20,7 @@ class UserData {
   String lastName;
   String avatar;
 
+//Pull Data From Nested JSON Data
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         id: json["id"],
         email: json["email"],
@@ -45,17 +47,22 @@ class SingleUser extends StatefulWidget {
   _SingleUserState createState() => _SingleUserState();
 }
 
+//User Detail View
 class _SingleUserState extends State<SingleUser> {
   @override
   Widget build(BuildContext context) {
+    //Catch Index Of Selected User From The HomePage
     final indexObject = ModalRoute.of(context)!.settings.arguments;
+    //Catch Future Users
     CatchUsers argument = indexObject as CatchUsers;
 
     var userIndex = argument.userIndex;
     var data = argument.data;
+    //Create Increments for Next/Previous User
     int nextUserIncrement;
     int prevUserIncrement;
 
+    //Check If the User Opened is First/Last
     if (userIndex == 0) {
       nextUserIncrement = 1;
       prevUserIncrement = -11;
@@ -69,6 +76,7 @@ class _SingleUserState extends State<SingleUser> {
       nextUserIncrement = 0;
       prevUserIncrement = 0;
     }
+    //Create Next User
     UserData nextUser = new UserData(
         id: data.data[userIndex + nextUserIncrement].id,
         email: data.data[userIndex + nextUserIncrement].email,
@@ -76,18 +84,21 @@ class _SingleUserState extends State<SingleUser> {
         lastName: data.data[userIndex + nextUserIncrement].lastName,
         avatar: data.data[userIndex + nextUserIncrement].avatar);
 
+    //Create Previous User
     UserData prevUser = new UserData(
         id: data.data[userIndex - prevUserIncrement].id,
         email: data.data[userIndex - prevUserIncrement].email,
         firstName: data.data[userIndex - prevUserIncrement].firstName,
         lastName: data.data[userIndex - prevUserIncrement].lastName,
         avatar: data.data[userIndex - prevUserIncrement].avatar);
-
+//Print User Details View
     return Scaffold(
       appBar: AppBar(
         title: Text(
+          //Set User Name + Last Name As The Title Of The Page
           widget.singleUser.firstName + " " + widget.singleUser.lastName,
         ),
+        //If Pressed Back Arrow, Send To The HomePage
         leading: GestureDetector(
           onTap: () {
             Navigator.push(
@@ -104,11 +115,13 @@ class _SingleUserState extends State<SingleUser> {
           Align(
             alignment: Alignment(0, 0),
             child: Column(
+              //Full Data Container
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
                   child: Container(
+                    //Inner Container Using 72% Of Screen Height
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.72,
                     decoration: BoxDecoration(
@@ -156,6 +169,7 @@ class _SingleUserState extends State<SingleUser> {
                           ),
                         ],
                       ),
+                      //User ID
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -179,6 +193,7 @@ class _SingleUserState extends State<SingleUser> {
                               ],
                             ),
                           ),
+                          //User Avatar
                           Container(
                             height: 220,
                             width: 220,
@@ -196,6 +211,7 @@ class _SingleUserState extends State<SingleUser> {
                               ),
                             ),
                           ),
+                          //User First Name Label
                           Padding(
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
                             child: Text("First Name: ",
@@ -208,6 +224,7 @@ class _SingleUserState extends State<SingleUser> {
                                 ),
                                 textAlign: TextAlign.center),
                           ),
+                          //User First Name
                           Padding(
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                             child: Text(widget.singleUser.firstName,
@@ -220,6 +237,7 @@ class _SingleUserState extends State<SingleUser> {
                                 ),
                                 textAlign: TextAlign.center),
                           ),
+                          //User First Name Underline
                           Divider(
                             height: 2,
                             thickness: 2,
@@ -227,6 +245,7 @@ class _SingleUserState extends State<SingleUser> {
                             endIndent: 70,
                             color: Colors.white,
                           ),
+                          //User Last Name Label
                           Padding(
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
                             child: Text("Last Name: ",
@@ -239,6 +258,7 @@ class _SingleUserState extends State<SingleUser> {
                                 ),
                                 textAlign: TextAlign.center),
                           ),
+                          //User Last Name
                           Padding(
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                             child: Text(widget.singleUser.lastName,
@@ -251,6 +271,7 @@ class _SingleUserState extends State<SingleUser> {
                                 ),
                                 textAlign: TextAlign.center),
                           ),
+                          //User Last Name Underline
                           Divider(
                             height: 2,
                             thickness: 2,
@@ -258,6 +279,7 @@ class _SingleUserState extends State<SingleUser> {
                             endIndent: 70,
                             color: Colors.white,
                           ),
+                          //User Email Label
                           Padding(
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
                             child: Text("Email: ",
@@ -270,6 +292,7 @@ class _SingleUserState extends State<SingleUser> {
                                 ),
                                 textAlign: TextAlign.center),
                           ),
+                          //User Email
                           Padding(
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                             child: Text(widget.singleUser.email,
@@ -282,18 +305,12 @@ class _SingleUserState extends State<SingleUser> {
                                 ),
                                 textAlign: TextAlign.center),
                           ),
-                          Divider(
-                            height: 2,
-                            thickness: 2,
-                            indent: 70,
-                            endIndent: 70,
-                            color: Colors.white,
-                          )
                         ],
                       ),
                     ),
                   ),
                 ),
+                //Button Container
                 Expanded(
                   child: Align(
                     alignment: Alignment(0.35, 0),
@@ -302,12 +319,13 @@ class _SingleUserState extends State<SingleUser> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
+                        //Left Button
                         IconButton(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
+                                builder: (context) => //Open Previous User Data
                                     SingleUser(singleUser: prevUser),
                                 settings: RouteSettings(
                                   arguments: CatchUsers(
@@ -320,12 +338,13 @@ class _SingleUserState extends State<SingleUser> {
                           color: Color(0XFFFFD300),
                           iconSize: 30,
                         ),
+                        //Right Button
                         IconButton(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
+                                builder: (context) => //Open Necxt User Data
                                     SingleUser(singleUser: nextUser),
                                 settings: RouteSettings(
                                   arguments: CatchUsers(
